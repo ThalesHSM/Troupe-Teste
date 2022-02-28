@@ -4,27 +4,26 @@ const USER_URL = 'http://localhost:5000/usuarios';
 const CLIENTS_URL = 'http://localhost:5000/clientes';
 
 interface IClient {
-  Nome: string;
-  CPF: string;
-  Email: string;
-  CEP: string;
-  Rua: string;
-  Número: string;
-  Bairro: string;
-  Cidade: string;
+  nome: string;
+  cpf: string;
+  email: string;
+  cep: string;
+  rua: string;
+  numero: string;
+  bairro: string;
+  cidade: string;
 }
 
 async function handleCreateClient(Client: IClient) {
-  const { CEP, Rua, Número, Bairro, Cidade } = Client;
+  const { nome, email, cpf } = Client;
+  const { cep, rua, numero, bairro, cidade } = Client;
 
-  const { Nome, Email, CPF } = Client;
-
-  const endereço = { CEP, Rua, Número, Bairro, Cidade };
+  const endereço = { cep, rua, numero, bairro, cidade };
 
   try {
     await axios.post(
       CLIENTS_URL,
-      { Nome, Email, CPF, endereço },
+      { nome, email, cpf, endereço },
       {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
@@ -41,7 +40,9 @@ async function handleGetClients() {
       return resp.data;
     });
     return response;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function handleLogin(email: string, password: string) {
@@ -59,9 +60,40 @@ async function handleLogin(email: string, password: string) {
     });
 }
 
+async function handleUpdateClient(id: string, Client: IClient) {
+  const { nome, email, cpf } = Client;
+  const { cep, rua, numero, bairro, cidade } = Client;
+
+  const endereço = { cep, rua, numero, bairro, cidade };
+
+  try {
+    await axios.patch(
+      `http://localhost:5000/clientes/${id}`,
+      { nome, email, cpf, endereço },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function handleDeleteClient(id: string) {
+  await axios.delete(`http://localhost:5000/clientes/${id}`);
+}
+
 async function handleGetCEP(CEP: string) {
   const response = await axios.get(`https://viacep.com.br/ws/${CEP}/json`);
   return response.data;
 }
 
-export { handleCreateClient, handleLogin, handleGetClients, handleGetCEP };
+export {
+  handleCreateClient,
+  handleLogin,
+  handleGetClients,
+  handleDeleteClient,
+  handleUpdateClient,
+  handleGetCEP,
+};

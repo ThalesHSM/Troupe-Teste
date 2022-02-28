@@ -18,7 +18,8 @@
         "alias": {
           "@Config": "./src/config",
           "@HomeScreen": "./src/screens/HomeScreen",
-          "@ClientsScreen": "./src/screens/ClientsScreen"
+          "@ClientsScreen": "./src/screens/ClientsScreen",
+          "@Assets": "./src/assets"
         }
       }
     ]

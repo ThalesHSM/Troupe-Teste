@@ -17,8 +17,9 @@
     "paths": {
       "@Config/*": ["./src/config/*"],
       "@HomeScreen/*": ["./src/screens/HomeScreen/*"],
-      "@ClientsScreen/*": ["./src/screens/ClientsScreen/*"]
+      "@ClientsScreen/*": ["./src/screens/ClientsScreen/*"],
+      "@Assets/*": ["./src/assets/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "decs.d.ts"]
 }

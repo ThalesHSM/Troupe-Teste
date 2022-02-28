@@ -6,5 +6,84 @@
       "token": "token"
     }
   ],
-  "clientes": []
+  "clientes": [
+    {
+      "nome": "fernanda",
+      "email": "thsm271@gmail.com",
+      "cpf": "235.555.555-5_",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Rua Gerônimo Lorena",
+        "numero": "6775",
+        "bairro": "Vila Passos",
+        "cidade": "Lorena"
+      },
+      "id": 6
+    },
+    {
+      "nome": "ananda",
+      "email": "thsm271@gmail.com",
+      "cpf": "367.778.888-67",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Rua Gerônimo Lorena",
+        "numero": "888",
+        "bairro": "Vila Passos",
+        "cidade": "Lorena"
+      },
+      "id": 7
+    },
+    {
+      "nome": "maria",
+      "email": "thsm271@gmail.com",
+      "cpf": "454.788.989-89",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Rua Gerônimo Lorena",
+        "numero": "98090",
+        "bairro": "Vila Passos",
+        "cidade": "Lorena"
+      },
+      "id": 8
+    },
+    {
+      "nome": "anderson",
+      "email": "thsm271@gmail.com",
+      "cpf": "567.777.767-66",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Rua Gerônimo Lorena",
+        "numero": "688",
+        "bairro": "Vila Passos",
+        "cidade": "Lorena"
+      },
+      "id": 9
+    },
+    {
+      "nome": "mario",
+      "email": "thsm271@gmail.com",
+      "cpf": "566.534.646-33",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Rua Gerônimo Lorena",
+        "numero": "1234",
+        "bairro": "Vila Passos",
+        "cidade": "Lorena"
+      },
+      "id": 10
+    },
+    {
+      "nome": "Otávio",
+      "email": "thsm271@gmail.com",
+      "cpf": "557.767.777-77",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Rua Gerônimo Lorena",
+        "numero": "333",
+        "bairro": "Vila Passos",
+        "cidade": "Aparecida"
+      },
+      "id": 11
+    }
+  ]
 }

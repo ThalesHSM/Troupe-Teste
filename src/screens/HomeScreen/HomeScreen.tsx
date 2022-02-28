@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyledLoginButton,
-  StyledMainDiv,
-  StyledShowPasswordButton,
-} from './StyledHomeScreen';
-import validator from 'validator';
+import { StyledMainDiv, StyledModal, StyledTitle } from './StyledHomeScreen';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { handleLogin } from '@Config/api/api';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-activity';
 import 'react-activity/dist/library.css';
-import Input from 'src/components/Input/Input';
 
-interface IUser {
-  Email: string;
-  Password: string;
-}
+import { LoginValidation } from 'src/components/LoginValidation/LoginValidation';
+import Character from '../../assets/Character.svg';
 
 function HomeScreen({ setIsLoggedIn }: any) {
-  const [user, setUser] = useState<IUser>({ Email: '', Password: '' });
-
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -34,9 +23,15 @@ function HomeScreen({ setIsLoggedIn }: any) {
     }
   }, []);
 
-  async function handleVerifyUser() {
-    if (!validator.isEmail(user.Email)) {
-      toast.error('O Email não é válido!', {
+  async function handleVerifyUser(email: string, password: string) {
+    setIsLoading(true);
+    await handleLogin(email, password);
+
+    setIsLoading(false);
+
+    const citiesJSON = localStorage.getItem('@storage_Key');
+    if (!citiesJSON) {
+      return toast.error('Verifique se colocou as informações corretas!', {
         position: 'top-left',
         autoClose: 5000,
         hideProgressBar: false,
@@ -46,33 +41,22 @@ function HomeScreen({ setIsLoggedIn }: any) {
         progress: undefined,
       });
     }
-    if (user.Password.length < 4) {
-      toast.error('A senha deve ter mais do que 4 caracteres!', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      setIsLoading(true);
-      await handleLogin(user.Email, user.Password);
-      setIsLoading(false);
-      setIsLoggedIn(true);
+
+    setIsLoggedIn(true);
+    toast.success('Login feito com sucesso!', {
+      position: 'top-left',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setTimeout(() => {
       navigate('/Clients');
-    }
+    }, 2000);
   }
 
-  function handleChange(e: any) {
-    const { value } = e.target;
-    const { placeholder } = e.target;
-    setUser({
-      ...user,
-      [placeholder]: value,
-    });
-  }
   return (
     <StyledMainDiv>
       <ToastContainer
@@ -86,50 +70,19 @@ function HomeScreen({ setIsLoggedIn }: any) {
         draggable
         pauseOnHover
       />
+      <StyledTitle>TROUPE</StyledTitle>
       <div
         style={{
-          backgroundColor: 'white',
+          border: '2px solid #f7f7f7',
           borderRadius: 20,
-          width: '25vw',
-          height: '60vh',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'space-evenly',
         }}
       >
-        <div>
-          <h2>Email</h2>
-          <Input
-            Type="email"
-            OnChange={(e) => {
-              handleChange(e);
-            }}
-            PlaceHolder="Email"
-            Value={user.Email}
-          />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h2>Password</h2>
-          <Input
-            Type={showPassword ? 'text' : 'password'}
-            OnChange={(e) => {
-              handleChange(e);
-            }}
-            PlaceHolder="Password"
-            Value={user.Password}
-          />
-          <div style={{ display: 'flex' }}>
-            <p>Show Password</p>
-            <StyledShowPasswordButton
-              showPassword={showPassword}
-              style={{}}
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </div>
-        </div>
-        {isLoading ? <Spinner /> : null}
-        <StyledLoginButton onClick={handleVerifyUser}>Login</StyledLoginButton>
+        <StyledModal>
+          <LoginValidation handleVerifyUser={handleVerifyUser} />
+          {isLoading ? <Spinner /> : <div style={{ height: 24 }} />}
+        </StyledModal>
+        <img src={Character} alt="" style={{ width: 500 }} />
       </div>
     </StyledMainDiv>
   );

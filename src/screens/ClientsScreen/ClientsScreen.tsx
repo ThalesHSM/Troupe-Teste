@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StyledLogoutButton, StyledMainDiv } from './StyledClientScreen';
-import CreateClient from 'src/components/CreateClient/CreateClient';
+import { StyledInputDiv, StyledMainDiv } from './StyledClientScreen';
+
 import { handleGetClients } from '@Config/api/api';
 
 import { Dots } from 'react-activity';
 import 'react-activity/dist/library.css';
+import ClientsTable from 'src/components/ClientsTable/ClientsTable';
+import { ClientValidation } from 'src/components/ClientValidation/ClientValidation';
+import CustomButton from 'src/components/CustomButton/CustomButton';
 
 interface IClient {
-  Nome: string;
-  CPF: string;
-  Email: string;
-  CEP: string;
-  Rua: string;
-  Número: string;
-  Bairro: string;
-  Cidade: string;
+  nome: string;
+  cpf: string;
+  email: string;
+  cep: string;
+  rua: string;
+  numero: string;
+  bairro: string;
+  cidade: string;
 }
 
 function ClientsScreen({ setIsLoggedIn }: any) {
@@ -41,9 +44,6 @@ function ClientsScreen({ setIsLoggedIn }: any) {
     }
     getClients();
   }, []);
-  function createNewClient() {
-    setShowModal(!showModal);
-  }
 
   return (
     <StyledMainDiv>
@@ -52,7 +52,6 @@ function ClientsScreen({ setIsLoggedIn }: any) {
           display: 'flex',
           flex: 1,
           width: '100%',
-          justifyContent: 'flex-end',
           flexDirection: 'column',
         }}
       >
@@ -60,33 +59,46 @@ function ClientsScreen({ setIsLoggedIn }: any) {
           style={{
             display: 'flex',
             flex: 1,
-            justifyContent: 'space-between  ',
+            justifyContent: 'space-between',
           }}
         >
-          <StyledLogoutButton onClick={createNewClient}>
-            Criar Cliente
-          </StyledLogoutButton>
-          <StyledLogoutButton onClick={handleLogout}>LOGOUT</StyledLogoutButton>
+          {clients?.length > 0 ? (
+            <CustomButton onClick={() => setShowModal(!showModal)}>
+              Criar Cliente
+            </CustomButton>
+          ) : (
+            <div />
+          )}
+
+          <CustomButton onClick={handleLogout}>LOGOUT</CustomButton>
         </div>
         <div
           style={{
             display: 'flex',
-            flex: 1,
             justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
           }}
         >
           {isLoading ? (
-            <Dots color="white" size={50} />
+            <Dots color="black" size={50} />
           ) : (
             <>
-              {clients?.length === 0 || showModal === true ? (
-                <CreateClient setShowModal={setShowModal} />
-              ) : (
-                <div>
-                  {clients.map((item) => (
-                    <p>{item.Nome}</p>
-                  ))}
+              {clients?.length > 0 && showModal === false ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flex: 1,
+                    height: '100%',
+                  }}
+                >
+                  <ClientsTable />
                 </div>
+              ) : (
+                <ClientValidation
+                  setClients={setClients}
+                  setShowModal={setShowModal}
+                />
               )}
             </>
           )}
