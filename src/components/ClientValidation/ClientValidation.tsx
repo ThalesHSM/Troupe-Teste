@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { FormContainer } from './StyledClientValidation';
+import {
+  FormContainer,
+  StyledButtonDiv,
+  StyledInputDiv,
+  StyledPersonalInfoDiv,
+} from './StyledClientValidation';
 import {
   handleCreateClient,
   handleGetCEP,
-  handleGetClients,
+  handleUpdateClient,
 } from '@Config/api/api';
 import { toast, ToastContainer } from 'react-toastify';
 import ReactInputMask from 'react-input-mask';
+import { useNavigate } from 'react-router-dom';
 
 import { Spinner } from 'react-activity';
 import 'react-activity/dist/library.css';
@@ -37,14 +43,15 @@ const SignupSchema = Yup.object().shape({
   cidade: Yup.string().required('Necessário'),
 });
 
-export function ClientValidation({ setClients, setShowModal }: any) {
+export function ClientValidation({ client, setShowModal }: any) {
   const [isLoading, setIsLoading] = useState<any>(false);
+
+  const navigate = useNavigate();
+  const focusRef = useRef<any>(null);
 
   async function onBlurCep(e: any, setFieldValue: any) {
     const { value } = e.target;
-
     const newCEPNumbers = value.replace(/-|_/g, '');
-    console.log(newCEPNumbers);
     if (newCEPNumbers?.length !== 8) {
       toast.error('O CEP não existe!', {
         position: 'top-left',
@@ -63,28 +70,36 @@ export function ClientValidation({ setClients, setShowModal }: any) {
     setFieldValue('rua', newCEP.logradouro);
     setFieldValue('bairro', newCEP.bairro);
     setFieldValue('cidade', newCEP.localidade);
+
+    focusRef.current.focus();
+  }
+
+  async function updateClient(Client: any) {
+    await handleUpdateClient(client.id, Client);
+    navigate(-1);
   }
   return (
     <FormContainer>
       <Formik
         initialValues={{
-          nome: '',
-          email: '',
-          cpf: '',
-          cep: '',
-          rua: '',
-          numero: '',
-          bairro: '',
-          cidade: '',
+          nome: `${client ? client.nome : ''}`,
+          email: `${client ? client.email : ''}`,
+          cpf: `${client ? client.cpf : ''}`,
+          cep: `${client ? client.endereço.cep : ''}`,
+          rua: `${client ? client.endereço.rua : ''}`,
+          numero: `${client ? client.endereço.numero : ''}`,
+          bairro: `${client ? client.endereço.bairro : ''}`,
+          cidade: `${client ? client.endereço.cidade : ''}`,
         }}
         validationSchema={SignupSchema}
         onSubmit={async (Client) => {
           setIsLoading(true);
-
-          await handleCreateClient(Client);
-          const newClients = await handleGetClients();
+          {
+            client
+              ? await updateClient(Client)
+              : await handleCreateClient(Client);
+          }
           setIsLoading(false);
-          setClients(newClients);
           setShowModal(false);
         }}
       >
@@ -102,42 +117,21 @@ export function ClientValidation({ setClients, setShowModal }: any) {
               pauseOnHover
               closeButton={false}
             />
-            <div
-              style={{
-                display: 'flex',
-                flex: 1,
-                flexDirection: 'column',
-              }}
-            >
-              <h1>Informações Pessoais</h1>
-              <div
-                style={{
-                  display: 'flex',
-                  flex: 1,
-                }}
-              >
-                <div>
-                  <Field name="nome" placeHolder="Nome" />
-                  {errors.nome && touched.nome ? (
-                    <div>{errors.nome}</div>
-                  ) : null}
-                </div>
 
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginLeft: 100,
-                  }}
-                >
-                  <Field name="email" placeHolder="Email" />
-
-                  {errors.email && touched.email ? (
-                    <div>{errors.email}</div>
-                  ) : null}
-                </div>
+            <h1>Informações Pessoais</h1>
+            <StyledPersonalInfoDiv>
+              <div>
+                <Field name="nome" placeholder="Nome" id="name_field" />
+                {errors.nome && touched.nome ? <div>{errors.nome}</div> : null}
               </div>
-            </div>
+              <StyledInputDiv>
+                <Field name="email" placeholder="Email" />
+
+                {errors.email && touched.email ? (
+                  <div>{errors.email}</div>
+                ) : null}
+              </StyledInputDiv>
+            </StyledPersonalInfoDiv>
 
             <Field
               name="cpf"
@@ -146,14 +140,14 @@ export function ClientValidation({ setClients, setShowModal }: any) {
                   <ReactInputMask
                     {...field}
                     mask="999.999.999-99"
-                    placeHolder="CPF"
+                    placeholder="CPF"
                     type="text"
                   />
                   {errors.cpf && touched.cpf ? <div>{errors.cpf}</div> : null}
                 </>
               )}
             />
-            <h1>Endereço</h1>
+            <h1 style={{ paddingTop: 40 }}>Endereço</h1>
             <div
               style={{
                 display: 'flex',
@@ -168,7 +162,7 @@ export function ClientValidation({ setClients, setShowModal }: any) {
                     <ReactInputMask
                       {...field}
                       mask="99999-999"
-                      placeHolder="CEP"
+                      placeholder="CEP"
                       type="text"
                       onBlur={(e: any) => {
                         onBlurCep(e, setFieldValue);
@@ -179,65 +173,42 @@ export function ClientValidation({ setClients, setShowModal }: any) {
                 )}
               />
 
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  marginLeft: 100,
-                }}
-              >
-                <Field name="rua" placeHolder="Rua" />
+              <StyledInputDiv>
+                <Field name="rua" placeholder="Rua" />
 
                 {errors.rua && touched.rua ? <div>{errors.rua}</div> : null}
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-
-                  marginLeft: 100,
-                }}
-              >
-                <Field name="numero" placeHolder="Numero" />
+              </StyledInputDiv>
+              <StyledInputDiv>
+                <Field name="numero" placeholder="Numero" innerRef={focusRef} />
 
                 {errors.numero && touched.numero ? (
                   <div>{errors.numero}</div>
                 ) : null}
-              </div>
+              </StyledInputDiv>
               <div>
-                <Field name="bairro" placeHolder="Bairro" />
+                <Field name="bairro" placeholder="Bairro" />
 
                 {errors.bairro && touched.bairro ? (
                   <div>{errors.bairro}</div>
                 ) : null}
               </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-
-                  marginLeft: 100,
-                }}
-              >
-                <Field name="cidade" placeHolder="Cidade" />
+              <StyledInputDiv>
+                <Field name="cidade" placeholder="Cidade" />
 
                 {errors.cidade && touched.cidade ? (
                   <div>{errors.cidade}</div>
                 ) : null}
-              </div>
+              </StyledInputDiv>
             </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: 50,
-                marginRight: 130,
-              }}
-            >
+            <StyledButtonDiv>
               {isLoading ? <Spinner size={25} /> : <div />}
-              <button type="submit">Criar novo cliente</button>
-            </div>
+              {client ? (
+                <button type="submit">Atualizar Cliente</button>
+              ) : (
+                <button type="submit">Criar novo Cliente</button>
+              )}
+            </StyledButtonDiv>
           </Form>
         )}
       </Formik>

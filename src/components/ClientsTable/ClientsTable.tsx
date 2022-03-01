@@ -1,26 +1,37 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { StyledMainDiv, StyledTableDiv } from './StyledClientsTable';
+import {
+  StyledButtonsDiv,
+  StyledIconDiv,
+  StyledMainDiv,
+  StyledTableDiv,
+} from './StyledClientsTable';
 
 import 'react-activity/dist/library.css';
 
-import { GrUpdate } from 'react-icons/gr';
+import { useNavigate } from 'react-router-dom';
+
 import { handleDeleteClient, handleGetClients } from '@Config/api/api';
 
 import ReactDatatable from '@ashvin27/react-datatable';
 
-import { Spinner } from 'react-activity';
+import { Levels, Spinner } from 'react-activity';
 import 'react-activity/dist/library.css';
 
+import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
+
 function ClientsTable() {
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [tableInfo, setTableInfo] = useState<any>();
 
   async function handleDelete(id: string) {
-    setIsLoading(true);
+    setButtonLoading(true);
 
     await handleDeleteClient(id);
-    setIsLoading(false);
     const newClients = await handleGetClients();
+    setButtonLoading(false);
     setTableInfo(newClients);
   }
 
@@ -39,22 +50,25 @@ function ClientsTable() {
       key: 'nome',
       text: 'Nome',
       className: 'table',
+      sortable: true,
     },
     {
       key: 'cpf',
       text: 'CPF',
       className: 'table',
+      sortable: true,
     },
     {
       key: 'email',
       text: 'Email',
       className: 'table',
+      sortable: true,
     },
     {
       key: 'cidade',
       text: 'Cidade',
       className: 'table',
-      cell: (record: any, index: any) => {
+      cell: (record: any) => {
         return (
           <Fragment>
             <p>{record.endereço.cidade} </p>
@@ -64,29 +78,37 @@ function ClientsTable() {
     },
     {
       key: 'action',
-      cell: (record: any, index: any) => {
+      cell: (record: any) => {
         return (
           <Fragment>
-            {isLoading ? (
+            {buttonLoading ? (
               <Spinner size={15} style={{ marginLeft: 100 }} />
             ) : (
-              <>
-                <GrUpdate size={25} id="btn" />
-                <button
-                  id="btn"
-                  onClick={() => handleDelete(record.id)}
-                  style={{
-                    marginLeft: 200,
-                    fontSize: 32,
+              <StyledButtonsDiv>
+                <StyledIconDiv>
+                  <AiFillEdit
+                    id="edit_btn"
+                    size={30}
+                    onClick={() =>
+                      navigate(`/Clients/${record.id}`, { state: record })
+                    }
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                  />
+                </StyledIconDiv>
 
-                    cursor: 'pointer',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                  }}
-                >
-                  X
-                </button>
-              </>
+                <StyledIconDiv>
+                  <AiOutlineClose
+                    id="delete_btn"
+                    size={30}
+                    onClick={() => handleDelete(record.id)}
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                  />
+                </StyledIconDiv>
+              </StyledButtonsDiv>
             )}
           </Fragment>
         );
@@ -104,10 +126,20 @@ function ClientsTable() {
       print: false,
     },
   };
+
   return (
     <StyledMainDiv>
       {isLoading ? (
-        <Spinner size={50} style={{ marginTop: 200 }} />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          <Levels size={50} />
+        </div>
       ) : (
         <StyledTableDiv>
           {tableInfo ? (

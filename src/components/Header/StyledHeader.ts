@@ -1,15 +1,12 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const StyledMainDiv = styled.div`
+export const StyledHeaderDiv = styled.div`
   display: flex;
   flex: 1;
-  height: 100%;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
-  font-family: 'Lato', sans-serif;
-  background-color: #f7f7f7;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const StyledLogoutButton = styled.button`

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyledMainDiv, StyledModal, StyledTitle } from './StyledHomeScreen';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { handleLogin } from '@Config/api/api';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-activity';
-import 'react-activity/dist/library.css';
 
-import { LoginValidation } from 'src/components/LoginValidation/LoginValidation';
-import Character from '../../assets/Character.svg';
+import { LoginValidation } from '@Components/LoginValidation/LoginValidation';
+import Character from '@Assets/Character.svg';
 
 function HomeScreen({ setIsLoggedIn }: any) {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,18 +41,8 @@ function HomeScreen({ setIsLoggedIn }: any) {
     }
 
     setIsLoggedIn(true);
-    toast.success('Login feito com sucesso!', {
-      position: 'top-left',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    setTimeout(() => {
-      navigate('/Clients');
-    }, 2000);
+
+    navigate('/Clients');
   }
 
   return (

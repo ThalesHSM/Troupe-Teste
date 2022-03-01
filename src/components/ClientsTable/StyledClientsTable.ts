@@ -16,12 +16,14 @@ export const StyledTableDiv = styled.div`
   font-size: 20px;
 
   input {
-    width: 200px;
-    height: 30px;
-    font-size: 15px;
+    width: 300px;
+    height: 40px;
+    font-size: 20px;
     padding: 5px;
     border-radius: 5px;
+    border: none;
     margin-top: 20px;
+    background-color: #f7f7f7;
   }
 
   ul {
@@ -61,30 +63,34 @@ export const StyledTableDiv = styled.div`
   }
 
   th {
-    color: #979096;
+    color: #3d3d3d;
     padding-right: 13.2vw;
     padding-bottom: 10px;
     font-size: 20px;
     cursor: default;
+
+    @media (max-width: 1600px) {
+      padding-right: 12vw;
+    }
+    @media (max-width: 1100px) {
+      padding-right: 10vw;
+    }
   }
 `;
 
-export const StyledClientDiv = styled.div`
+export const StyledIconDiv = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 30vw;
-  height: 18vh;
-  border-radius: 20px;
-  background-color: white;
-  margin-top: 20px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  :hover {
+    transition: 0.2s;
+    opacity: 0.3;
+  }
 `;
 
 export const StyledButtonsDiv = styled.div`
   display: flex;
-  height: 100%;
-  flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   flex: 1;
 `;

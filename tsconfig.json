@@ -13,11 +13,14 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
 
+    "types": ["node", "jest"],
+
     "baseUrl": ".",
     "paths": {
       "@Config/*": ["./src/config/*"],
       "@HomeScreen/*": ["./src/screens/HomeScreen/*"],
       "@ClientsScreen/*": ["./src/screens/ClientsScreen/*"],
+      "@Components/*": ["./src/components/*"],
       "@Assets/*": ["./src/assets/*"]
     }
   },

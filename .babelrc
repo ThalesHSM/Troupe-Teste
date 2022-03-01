@@ -19,6 +19,7 @@
           "@Config": "./src/config",
           "@HomeScreen": "./src/screens/HomeScreen",
           "@ClientsScreen": "./src/screens/ClientsScreen",
+          "@Components": "./src/components",
           "@Assets": "./src/assets"
         }
       }

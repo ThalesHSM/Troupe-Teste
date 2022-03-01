@@ -9,6 +9,7 @@ import {
 
 import HomeScreen from '@HomeScreen/HomeScreen';
 import ClientsScreen from '@ClientsScreen/ClientsScreen';
+import ClientUpdate from 'src/screens/ClientUpdateScreen/ClientUpdate';
 
 function routes() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -20,13 +21,23 @@ function routes() {
           path="/"
           element={<HomeScreen setIsLoggedIn={setIsLoggedIn} />}
         />
+
         {isLoggedIn ? (
-          <Route
-            path="/Clients"
-            element={<ClientsScreen setIsLoggedIn={setIsLoggedIn} />}
-          />
+          <>
+            <Route
+              path="/Clients"
+              element={<ClientsScreen setIsLoggedIn={setIsLoggedIn} />}
+            />
+            <Route
+              path="/Clients/:id"
+              element={<ClientUpdate setIsLoggedIn={setIsLoggedIn} />}
+            />
+          </>
         ) : (
-          <Route path="/Clients" element={<Navigate replace to="/" />} />
+          <>
+            <Route path="/Clients" element={<Navigate replace to="/" />} />
+            <Route path="/Clients/:id" element={<Navigate replace to="/" />} />
+          </>
         )}
       </Routes>
     </Router>

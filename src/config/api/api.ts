@@ -69,7 +69,7 @@ async function handleUpdateClient(id: string, Client: IClient) {
   try {
     await axios.patch(
       `http://localhost:5000/clientes/${id}`,
-      { nome, email, cpf, endereço },
+      { id, nome, email, cpf, endereço },
       {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,

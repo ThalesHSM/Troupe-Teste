@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { StyledInputDiv, StyledMainDiv } from './StyledClientScreen';
+import { StyledMainDiv } from './StyledClientScreen';
 
 import { handleGetClients } from '@Config/api/api';
 
-import { Dots } from 'react-activity';
+import { Levels } from 'react-activity';
 import 'react-activity/dist/library.css';
-import ClientsTable from 'src/components/ClientsTable/ClientsTable';
-import { ClientValidation } from 'src/components/ClientValidation/ClientValidation';
-import CustomButton from 'src/components/CustomButton/CustomButton';
+import ClientsTable from '@Components/ClientsTable/ClientsTable';
+import { ClientValidation } from '@Components/ClientValidation/ClientValidation';
+import Header from '@Components/Header/Header';
 
 interface IClient {
   nome: string;
@@ -22,17 +21,9 @@ interface IClient {
 }
 
 function ClientsScreen({ setIsLoggedIn }: any) {
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clients, setClients] = useState<IClient[]>([]);
-
-  function handleLogout() {
-    localStorage.removeItem('@storage_Key');
-    setIsLoggedIn(false);
-    navigate('/');
-  }
 
   useEffect(() => {
     async function getClients() {
@@ -45,6 +36,10 @@ function ClientsScreen({ setIsLoggedIn }: any) {
     getClients();
   }, []);
 
+  function handleShowModal() {
+    setShowModal(!showModal);
+  }
+
   return (
     <StyledMainDiv>
       <div
@@ -55,23 +50,10 @@ function ClientsScreen({ setIsLoggedIn }: any) {
           flexDirection: 'column',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flex: 1,
-            justifyContent: 'space-between',
-          }}
-        >
-          {clients?.length > 0 ? (
-            <CustomButton onClick={() => setShowModal(!showModal)}>
-              Criar Cliente
-            </CustomButton>
-          ) : (
-            <div />
-          )}
-
-          <CustomButton onClick={handleLogout}>LOGOUT</CustomButton>
-        </div>
+        <Header
+          setIsLoggedIn={setIsLoggedIn}
+          handleShowModal={handleShowModal}
+        />
         <div
           style={{
             display: 'flex',
@@ -81,7 +63,7 @@ function ClientsScreen({ setIsLoggedIn }: any) {
           }}
         >
           {isLoading ? (
-            <Dots color="black" size={50} />
+            <Levels size={50} />
           ) : (
             <>
               {clients?.length > 0 && showModal === false ? (
