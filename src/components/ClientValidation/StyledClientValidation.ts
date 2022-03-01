@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 export const StyledPersonalInfoDiv = styled.div`
   display: flex;
 

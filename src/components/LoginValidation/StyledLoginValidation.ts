@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const StyledButton = styled.button`
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
 
@@ -30,31 +31,13 @@ export const FormContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
 
-  @media (max-width: 1600px) {
-    width: 400px;
-  }
-
-  @media (max-width: 1300px) {
-    width: 300px;
-  }
-
-  @media (max-width: 1000px) {
-    width: 200px;
-  }
-
-  @media (max-width: 700px) {
-    width: 100px;
-  }
-
   form {
     display: flex;
-    flex: 1;
     flex-direction: column;
     padding-top: 5px;
+    width: 25vw;
 
     input {
-      width: 400px;
-
       margin-top: 50px;
 
       font-size: 20px;

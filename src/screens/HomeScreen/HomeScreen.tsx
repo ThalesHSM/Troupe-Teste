@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyledMainDiv, StyledModal, StyledTitle } from './StyledHomeScreen';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { handleLogin } from '@Config/api/api';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-activity';

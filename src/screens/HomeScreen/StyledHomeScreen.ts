@@ -25,4 +25,5 @@ export const StyledModal = styled.div`
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
+  margin-right: 20px;
 `;
