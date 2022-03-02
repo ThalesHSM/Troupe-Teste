@@ -1,50 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { StyledMainDiv, StyledModal, StyledTitle } from './StyledHomeScreen';
+import { StyledMainDiv, StyledModal, StyledTitle } from './StyledSignInScreen';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { handleLogin } from '@Config/api/api';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Spinner } from 'react-activity';
-
 import { LoginValidation } from '@Components/LoginValidation/LoginValidation';
 import Character from '@Assets/Character.svg';
 
-function HomeScreen({ setIsLoggedIn }: any) {
+function SignInScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
-    const citiesJSON = localStorage.getItem('@storage_Key');
-    if (citiesJSON) {
-      setIsLoggedIn(true);
-      navigate('/Clients');
+    const token = localStorage.getItem('@storage_Key');
+    if (token) {
+      history.push('/Clients');
     }
   }, []);
 
   async function handleVerifyUser(email: string, password: string) {
     setIsLoading(true);
     await handleLogin(email, password);
-
     setIsLoading(false);
 
-    const citiesJSON = localStorage.getItem('@storage_Key');
-    if (!citiesJSON) {
-      return toast.error('Verifique se colocou as informações corretas!', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    const token = localStorage.getItem('@storage_Key');
+    if (token) {
+      history.push('/Clients');
     }
 
-    setIsLoggedIn(true);
-
-    navigate('/Clients');
+    return toast.error('Verifique se colocou as informações corretas!', {
+      position: 'top-left',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 
   return (
@@ -72,10 +66,14 @@ function HomeScreen({ setIsLoggedIn }: any) {
           <LoginValidation handleVerifyUser={handleVerifyUser} />
           {isLoading ? <Spinner /> : <div style={{ height: 24 }} />}
         </StyledModal>
-        <img src={Character} alt="" style={{ width: 500 }} />
+        <img
+          src={Character}
+          alt="Ícone de uma mulher com um notebook na mão apontando do formulário de login"
+          style={{ width: 500 }}
+        />
       </div>
     </StyledMainDiv>
   );
 }
 
-export default HomeScreen;
+export default SignInScreen;

@@ -1,45 +1,28 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
-
 import {
   StyledCreateButton,
   StyledHeaderDiv,
   StyledLogoutButton,
 } from './StyledHeader';
 
-function Header({ setIsLoggedIn, handleShowModal }: any) {
-  const navigate = useNavigate();
+function Header({ showClientInfo, handleShowClientInfo, clients }: any) {
+  const history = useHistory();
 
   function handleLogout() {
     localStorage.removeItem('@storage_Key');
-
-    setIsLoggedIn(false);
-    navigate('/');
+    history.push('/');
   }
 
   return (
     <StyledHeaderDiv>
       <StyledLogoutButton onClick={handleLogout}>LOGOUT</StyledLogoutButton>
-
-      {handleShowModal ? (
-        <StyledCreateButton onClick={handleShowModal}>
-          Criar Cliente
+      {clients?.length > 0 && handleShowClientInfo ? (
+        <StyledCreateButton onClick={handleShowClientInfo}>
+          {showClientInfo ? <p>Criar Cliente</p> : <p>Voltar</p>}
         </StyledCreateButton>
-      ) : (
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-          }}
-        >
-          <AiOutlineArrowLeft
-            size={50}
-            style={{ marginLeft: 40, cursor: 'pointer' }}
-            onClick={() => navigate(-1)}
-          />
-        </div>
-      )}
+      ) : null}
     </StyledHeaderDiv>
   );
 }

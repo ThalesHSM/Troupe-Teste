@@ -24,6 +24,10 @@ export const StyledLogoutButton = styled.button`
 `;
 
 export const StyledCreateButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
   background-color: #245993;
   color: #fff;
   font-size: 20px;

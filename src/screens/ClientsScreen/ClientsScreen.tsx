@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyledMainDiv } from './StyledClientScreen';
+import { StyledHeaderDiv, StyledMainDiv } from './StyledClientScreen';
 
 import { handleGetClients } from '@Config/api/api';
 
@@ -20,9 +20,9 @@ interface IClient {
   cidade: string;
 }
 
-function ClientsScreen({ setIsLoggedIn }: any) {
+function ClientsScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showClientInfo, setShowClientInfo] = useState<boolean>(true);
   const [clients, setClients] = useState<IClient[]>([]);
 
   useEffect(() => {
@@ -36,23 +36,17 @@ function ClientsScreen({ setIsLoggedIn }: any) {
     getClients();
   }, []);
 
-  function handleShowModal() {
-    setShowModal(!showModal);
+  function handleShowClientInfo() {
+    setShowClientInfo(!showClientInfo);
   }
 
   return (
     <StyledMainDiv>
-      <div
-        style={{
-          display: 'flex',
-          flex: 1,
-          width: '100%',
-          flexDirection: 'column',
-        }}
-      >
+      <StyledHeaderDiv>
         <Header
-          setIsLoggedIn={setIsLoggedIn}
-          handleShowModal={handleShowModal}
+          showClientInfo={showClientInfo}
+          handleShowClientInfo={handleShowClientInfo}
+          clients={clients}
         />
         <div
           style={{
@@ -66,7 +60,7 @@ function ClientsScreen({ setIsLoggedIn }: any) {
             <Levels size={50} />
           ) : (
             <>
-              {clients?.length > 0 && showModal === false ? (
+              {clients?.length > 0 && showClientInfo === true ? (
                 <div
                   style={{
                     display: 'flex',
@@ -77,15 +71,12 @@ function ClientsScreen({ setIsLoggedIn }: any) {
                   <ClientsTable />
                 </div>
               ) : (
-                <ClientValidation
-                  setClients={setClients}
-                  setShowModal={setShowModal}
-                />
+                <ClientValidation setClients={setClients} />
               )}
             </>
           )}
         </div>
-      </div>
+      </StyledHeaderDiv>
     </StyledMainDiv>
   );
 }

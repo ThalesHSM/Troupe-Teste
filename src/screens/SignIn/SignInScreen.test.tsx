@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import HomeScreen from './HomeScreen';
+import SignInScreen from './SignInScreen';
 
 describe('MyComponent', () => {
   let component: any;
 
   beforeEach(() => {
-    component = shallow(<HomeScreen />);
+    component = shallow(<SignInScreen />);
   });
 
-  it('should render the HomeScreen', () => {
+  it('should render the SignInScreen', () => {
     expect(component).toMatchSnapshot();
     component.unmount();
   });

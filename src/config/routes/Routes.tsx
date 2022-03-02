@@ -1,45 +1,58 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import {
   BrowserRouter as Router,
-  Routes,
   Route,
-  Navigate,
+  Switch,
+  Redirect,
 } from 'react-router-dom';
 
-import HomeScreen from '@HomeScreen/HomeScreen';
+import SignInScreen from 'src/screens/SignIn/SignInScreen';
 import ClientsScreen from '@ClientsScreen/ClientsScreen';
-import ClientUpdate from 'src/screens/ClientUpdateScreen/ClientUpdate';
+import ClientUpdate from '@ClientUpdateScreen/ClientUpdate';
+import NotFound from '@NotFound/NotFound';
 
 function routes() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const PrivateRoute = ({ component: Component, ...rest }) => {
+    const token = localStorage.getItem('@storage_Key');
+
+    return (
+      <Route
+        {...rest}
+        render={(props) =>
+          token ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: '/',
+              }}
+            />
+          )
+        }
+      />
+    );
+  };
 
   return (
     <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={<HomeScreen setIsLoggedIn={setIsLoggedIn} />}
+      <Switch>
+        <Route path="/" exact component={() => <SignInScreen />} />
+
+        <PrivateRoute
+          path="/Clients"
+          exact
+          component={() => <ClientsScreen />}
+        />
+        <PrivateRoute
+          path="/Clients/:id"
+          exact
+          component={() => <ClientUpdate />}
         />
 
-        {isLoggedIn ? (
-          <>
-            <Route
-              path="/Clients"
-              element={<ClientsScreen setIsLoggedIn={setIsLoggedIn} />}
-            />
-            <Route
-              path="/Clients/:id"
-              element={<ClientUpdate setIsLoggedIn={setIsLoggedIn} />}
-            />
-          </>
-        ) : (
-          <>
-            <Route path="/Clients" element={<Navigate replace to="/" />} />
-            <Route path="/Clients/:id" element={<Navigate replace to="/" />} />
-          </>
-        )}
-      </Routes>
+        <Route path="*">
+          <NotFound />
+        </Route>
+      </Switch>
     </Router>
   );
 }

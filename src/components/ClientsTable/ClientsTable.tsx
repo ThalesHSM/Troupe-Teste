@@ -5,22 +5,27 @@ import {
   StyledMainDiv,
   StyledTableDiv,
 } from './StyledClientsTable';
-
 import 'react-activity/dist/library.css';
-
-import { useNavigate } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
 import { handleDeleteClient, handleGetClients } from '@Config/api/api';
-
 import ReactDatatable from '@ashvin27/react-datatable';
-
 import { Levels, Spinner } from 'react-activity';
 import 'react-activity/dist/library.css';
-
 import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 
+const config = {
+  show_length_menu: false,
+  page_size: 8,
+  show_pagination: true,
+  pagination: 'basic',
+  button: {
+    excel: false,
+    print: false,
+  },
+};
+
 function ClientsTable() {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -90,7 +95,7 @@ function ClientsTable() {
                     id="edit_btn"
                     size={30}
                     onClick={() =>
-                      navigate(`/Clients/${record.id}`, { state: record })
+                      history.push(`/Clients/${record.id}`, { state: record })
                     }
                     style={{
                       cursor: 'pointer',
@@ -115,17 +120,6 @@ function ClientsTable() {
       },
     },
   ];
-
-  const config = {
-    show_length_menu: false,
-    page_size: 8,
-    show_pagination: true,
-    pagination: 'basic',
-    button: {
-      excel: false,
-      print: false,
-    },
-  };
 
   return (
     <StyledMainDiv>

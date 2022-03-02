@@ -12,6 +12,13 @@ export const StyledMainDiv = styled.div`
   background-color: #f7f7f7;
 `;
 
+export const StyledHeaderDiv = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+`;
+
 export const StyledLogoutButton = styled.button`
   background-color: transparent;
   border: none;

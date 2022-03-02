@@ -11,7 +11,6 @@ export const StyledInputDiv = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 100px;
-
   @media (max-width: 1600px) {
     margin-left: 0px;
     :nth-child(2) {
@@ -94,7 +93,7 @@ export const FormContainer = styled.div`
 
 export const StyledButtonDiv = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 50px;
   margin-right: 130px;
 `;

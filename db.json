@@ -6,5 +6,19 @@
       "token": "token"
     }
   ],
-  "clientes": []
+  "clientes": [
+    {
+      "nome": "John Doe",
+      "email": "teste123@emaill.com.br",
+      "cpf": "333.333.333-33",
+      "endereço": {
+        "cep": "12605-140",
+        "rua": "Street 23",
+        "numero": "3232",
+        "bairro": "Apt 12",
+        "cidade": "New York"
+      },
+      "id": 2
+    }
+  ]
 }

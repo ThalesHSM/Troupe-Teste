@@ -18,8 +18,10 @@
     "baseUrl": ".",
     "paths": {
       "@Config/*": ["./src/config/*"],
-      "@HomeScreen/*": ["./src/screens/HomeScreen/*"],
+      "@SignIn/*": ["src/screens/SignIn/*"],
       "@ClientsScreen/*": ["./src/screens/ClientsScreen/*"],
+      "@ClientUpdateScreen/*": ["./src/screens/ClientUpdateScreen/*"],
+      "@NotFound/*": ["./src/screens/NotFound/*"],
       "@Components/*": ["./src/components/*"],
       "@Assets/*": ["./src/assets/*"]
     }

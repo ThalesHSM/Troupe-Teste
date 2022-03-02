@@ -14,8 +14,7 @@ import {
 } from '@Config/api/api';
 import { toast, ToastContainer } from 'react-toastify';
 import ReactInputMask from 'react-input-mask';
-import { useNavigate } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
 import { Spinner } from 'react-activity';
 import 'react-activity/dist/library.css';
 
@@ -43,10 +42,10 @@ const SignupSchema = Yup.object().shape({
   cidade: Yup.string().required('Necessário'),
 });
 
-export function ClientValidation({ client, setShowModal }: any) {
+export function ClientValidation({ client }: any) {
   const [isLoading, setIsLoading] = useState<any>(false);
 
-  const navigate = useNavigate();
+  const history = useHistory();
   const focusRef = useRef<any>(null);
 
   async function onBlurCep(e: any, setFieldValue: any) {
@@ -76,8 +75,9 @@ export function ClientValidation({ client, setShowModal }: any) {
 
   async function updateClient(Client: any) {
     await handleUpdateClient(client.id, Client);
-    navigate(-1);
+    history.push('/Clients');
   }
+
   return (
     <FormContainer>
       <Formik
@@ -100,7 +100,8 @@ export function ClientValidation({ client, setShowModal }: any) {
               : await handleCreateClient(Client);
           }
           setIsLoading(false);
-          setShowModal(false);
+
+          history.go(0);
         }}
       >
         {({ errors, touched, setFieldValue }) => (
@@ -202,11 +203,22 @@ export function ClientValidation({ client, setShowModal }: any) {
               </StyledInputDiv>
             </div>
             <StyledButtonDiv>
-              {isLoading ? <Spinner size={25} /> : <div />}
               {client ? (
-                <button type="submit">Atualizar Cliente</button>
+                <>
+                  {isLoading ? (
+                    <Spinner size={25} />
+                  ) : (
+                    <button type="submit">Atualizar Cliente</button>
+                  )}
+                </>
               ) : (
-                <button type="submit">Criar novo Cliente</button>
+                <>
+                  {isLoading ? (
+                    <Spinner size={25} />
+                  ) : (
+                    <button type="submit">Criar novo Cliente</button>
+                  )}
+                </>
               )}
             </StyledButtonDiv>
           </Form>
