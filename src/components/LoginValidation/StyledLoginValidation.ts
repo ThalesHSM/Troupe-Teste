@@ -5,26 +5,24 @@ export const StyledButton = styled.button`
   flex: 1;
   align-items: center;
   justify-content: center;
-
   outline: none;
   border: none;
 
   background-color: #245993;
   color: white;
-  width: 100%;
 
   border-radius: 10px;
-  cursor: pointer;
   letter-spacing: 1px;
 
-  height: 40px;
   font-size: 20px;
-  margin-top: 20px;
+  margin-top: 25px;
+  padding: 3px;
 
   :hover {
     transition: 0.2s;
     opacity: 0.9;
   }
+  cursor: pointer;
 `;
 
 export const FormContainer = styled.div`
