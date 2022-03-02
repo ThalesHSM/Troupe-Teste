@@ -10,6 +10,8 @@ Project made using React and JSON-Server that allows login and Projeto feito em 
 + List Client
 + Update Client
 + Delete Client
++ Redirect route
++ Not found route
 
 ## Technologies
 
